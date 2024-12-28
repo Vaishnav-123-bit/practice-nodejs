@@ -25,3 +25,41 @@ Example:
   "email": "john.doe@example.com",
   "password": "password123"
 }
+{
+  "token": "jwt-token",
+  "user": {
+    "_id": "user-id",
+    "fullName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+}{
+  "errors": [
+    {
+      "msg": "invalid email",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "3 chars long",
+      "param": "fullName.firstName",
+      "location": "body"
+    },
+    {
+      "msg": "Password must be length 6",
+      "param": "password",
+      "location": "body"
+    }
+  ]
+}curl -X POST http://localhost:4000/users/register \
+-H "Content-Type: application/json" \
+-d '{
+  "fullName": {
+    "firstName": "John",
+    "lastName": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123"
+}'
