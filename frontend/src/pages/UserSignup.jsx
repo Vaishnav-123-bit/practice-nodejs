@@ -1,22 +1,46 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
-
+import React, { useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { UserDataContext } from '../context/UserContext';
+import axios from 'axios';
 const UserSignup = () => {
   const[email, setEmail] = useState('');
   const[password, setPassword] = useState('');
   const[firstName, setFirstName] = useState('');
   const[lastName, setLastName] = useState('');
   const[userData, setUserData] = useState({});
+const {user,setUser}=useContext(UserDataContext);
 
-  const submitHandler = (e) => {
+  const navigate=useNavigate();
+
+  const submitHandler = async(e) => {
       e.preventDefault();
-      setUserData({ firstName:firstName,lastName :lastName ,email:email, password:password});
+      const newUser={
+        fullName:{
+          firstName:firstName,
+          lastName:lastName
+        },
+        email:email,
+        password:password
+      }
       setEmail('');
       setFirstName('');
       setLastName('');
       setPassword('');
-      console.log(userData);
+      // console.log(userData);
+
+
+  const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`,newUser);
+  // console.log(response) 
+  if(response.status===201){
+     const data=response.data;
+     setUser(data.user);
+     localStorage.setItem('token',data.token)
+     navigate('/home');
+
+    }
   }    
+
+  
 return (
   <div className="p-7 flex flex-col justify-between h-screen">
    <div>
